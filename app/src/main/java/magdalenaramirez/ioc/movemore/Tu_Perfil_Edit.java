@@ -24,7 +24,7 @@ public class Tu_Perfil_Edit extends AppCompatActivity {
     private String file = "credenciales_login";
     private String fileContents;
 
-    public static User user = new User(); //Get accesible in all sites - Mod
+    public static User usr = new User(); //Get accesible in all sites - Mod
     //public static User usr = new User(); //Get accesible in all sites
     //User usr = new User();
 
@@ -37,6 +37,8 @@ public class Tu_Perfil_Edit extends AppCompatActivity {
     private TextView mtxtV_usuario;
     private TextView mtxtV_email;
     private TextView mtxtV_role;
+    private TextView mtxtV_location;
+    private TextView mtxtV_bio;
 
     private String error = "";
     private String message="ERROR";
@@ -54,6 +56,8 @@ public class Tu_Perfil_Edit extends AppCompatActivity {
         mtxtV_usuario = (TextView) findViewById(R.id.txtV_Usuario);
         mtxtV_email = (TextView) findViewById(R.id.txtV_Email);
         mtxtV_role = (TextView) findViewById(R.id.txtV_Role);
+        mtxtV_location = (TextView) findViewById(R.id.txtV_Location);
+        mtxtV_bio = (TextView) findViewById(R.id.txtV_Bio);
 
         //ImageView logo - CLICK - volver al main
         ImageView mImageVCab = findViewById(R.id.ImageVCab);
@@ -126,30 +130,31 @@ public class Tu_Perfil_Edit extends AppCompatActivity {
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            //User usr = MenuPrincipal.usr;
+                            User usr = MenuPrincipal.usr;
                             //user.setId(Tu_Perfil.usr.getId());
-                            System.out.println(user.getId());
-                            //System.out.println(usr.getId());
-                            user.setFirstname(mtxtV_nombre.getText().toString());
-                            user.setLastname(mtxtV_apellidos.getText().toString());
-                            user.setPhone(mtxtV_telefono.getText().toString());
-                            user.setAddr(mtxtV_direccion.getText().toString());
-                            user.setUsername(mtxtV_usuario.getText().toString());
-                            user.setEmail(mtxtV_email.getText().toString());
+                            System.out.println("Tu perfil EDIT");
+                            //System.out.println(user.getId());
+                            System.out.println(usr.getId());
+                            usr.setFirstname(mtxtV_nombre.getText().toString());
+                            usr.setLastname(mtxtV_apellidos.getText().toString());
+                            usr.setPhone(mtxtV_telefono.getText().toString());
+                            usr.setAddr(mtxtV_direccion.getText().toString());
+                            usr.setUsername(mtxtV_usuario.getText().toString());
+                            usr.setEmail(mtxtV_email.getText().toString());
 
                             try {
-                                if (user.modifyUser(user)) {
-                                    Tu_Perfil.usr = user;
-                                    System.out.println("NUEVO:" + user.getFirstname());
+                                if (usr.modifyUser(usr)) {
+                                    Tu_Perfil.usr = usr;
+                                    System.out.println("NUEVO:" + usr.getFirstname());
                                     //System.out.println("ACTUALIZADO:" + usr.getFirstname());
-                                    System.out.println("NUEVO:" + user.getId());
+                                    System.out.println("NUEVO:" + usr.getId());
                                     //System.out.println("ACTUALIZADO:" + usr.getId());
                                     System.out.println("PERFIL MODIFICADO");
                                     Intent intent = new Intent(Tu_Perfil_Edit.this, MenuPrincipal.class);
                                     startActivity(intent);
                                 } else {
                                     //jOptionPane.showMessageDialog(null, usr.getMessage());
-                                    jOptionPane pane = jOptionPane.newInstance(user.getMessage());
+                                    jOptionPane pane = jOptionPane.newInstance(usr.getMessage());
                                     pane.show(getFragmentManager(), "error_dialog");
                                     mbtn_Guardar.setEnabled(true);
                                 }
@@ -163,9 +168,6 @@ public class Tu_Perfil_Edit extends AppCompatActivity {
                 }
             });
         }
-
-
-
         // Cierre del onCreate
     }
 
@@ -186,8 +188,8 @@ public class Tu_Perfil_Edit extends AppCompatActivity {
         mtxtV_telefono.setText(usr.getPhone());
         mtxtV_usuario.setText(usr.getUsername());
         mtxtV_email.setText(usr.getEmail());
-        //locLabel.setText(usr.getLocation());
-        //bioLabel.setText(usr.getBio());
+        mtxtV_location.setText(usr.getLocation());
+        mtxtV_bio.setText(usr.getBio());
         mtxtV_role.setText(usr.isAdmin()?"Admin":"User");
 
     }

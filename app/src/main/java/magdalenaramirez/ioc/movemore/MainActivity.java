@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences SM;
     RequestQueue requestQueue;
     //http://10.2.66.56/index.php/user/login?username=user_user1&password=11&email=asdgaehg@gaega
-    private static final String URl_login="http://10.2.66.56/index.php/user/login";
+    private static final String URl_login="https://10.2.66.56/index.php/user/login";
 
     //Datos del txt de credenciales de login
     private String file = "credenciales_login";
@@ -174,39 +174,31 @@ public class MainActivity extends AppCompatActivity {
 
         System.out.println(".......... LOAD AUTOMATICO............");
         //User usr = new User();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    System.out.println("emailString:" + emailString);
-                    System.out.println("passString :" + passwString);
-                    if (usr.loadUser(emailString, passwString)) {
-                        MenuPrincipal.usr = usr;
+        new Thread(() -> {
+            try {
+                System.out.println("emailString:" + emailString);
+                System.out.println("passString :" + passwString);
+                if (usr.loadUser(emailString, passwString)) {
+                    MenuPrincipal.usr = usr;
 
-                        if (usr.isAdmin()) {
-                            isAdminLogin = false;
-                            Intent intent_admin = new Intent(getApplicationContext(), MenuPrincipal_admin.class);
-                            startActivity(intent_admin);
-                            finish();
-                        } else {
-                            isAdminLogin = true;
-                            Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
-                            startActivity(intent);
-                            finish();
-                        }
+                    if (usr.isAdmin()) {
+                        isAdminLogin = false;
+                        Intent intent_admin = new Intent(getApplicationContext(), MenuPrincipal_admin.class);
+                        startActivity(intent_admin);
+                        finish();
                     } else {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(getApplicationContext(), "Credenciales inválidas!", Toast.LENGTH_LONG).show();
-                            }
-                        });
+                        isAdminLogin = true;
+                        Intent intent = new Intent(getApplicationContext(), MenuPrincipal.class);
+                        startActivity(intent);
+                        finish();
                     }
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } else {
+                    runOnUiThread(() -> Toast.makeText(getApplicationContext(), "Credenciales inválidas!", Toast.LENGTH_LONG).show());
                 }
-
+            } catch (IOException e) {
+                e.printStackTrace();
             }
+
         }).start();
         sharedPreference_login();
     }

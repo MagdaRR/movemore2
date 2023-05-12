@@ -170,9 +170,6 @@ public class User {
             JSONObject jsonObject = Util.getResponse("user/login", parameters);
             System.out.println(jsonObject);
 
-            if (jsonObject == null) {
-                return false;
-            }
             //Save message
             message = jsonObject.getString("message");
 
@@ -219,7 +216,33 @@ public class User {
 
     ;
 
-    public boolean delUser(User v_User) {
+    public boolean delUser() {
+
+        try{
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("user_id", String.valueOf(this.getId()));
+            JSONObject jsonObject = getResponse("user/deleteuser", parameters);
+            return jsonObject.getBoolean("status");
+
+        }catch (IOException ex) {
+            message = ex.getMessage();
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnrecoverableKeyException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+        return false;
+        /*
+
         // parameters.put("user_id");
         Map<String, String> parameters = new HashMap<>();
         parameters.put("user_id", String.valueOf(v_User.id));
@@ -227,8 +250,7 @@ public class User {
 
         try {
             //Obten la respuesta en Json
-            JSONObject jsonObject = getResponse("user/deleteprofile");
-
+            JSONObject jsonObject = getResponse("user/deleteprofile", parameters);
             message = jsonObject.getString("message"); //get message
 
             return jsonObject.getBoolean("status");
@@ -249,10 +271,39 @@ public class User {
 
         return false;
 
+         */
+
+
     }
 
     public boolean modifyUser(User v_User) {
 
+        try{
+            Map<String, String> parameters = new HashMap<>();
+            parameters.put("bio", v_User.getBio());
+            parameters.put("location", v_User.getLocation());
+            parameters.put("user_id", String.valueOf(v_User.getId()));
+            JSONObject jsonObject = getResponse("user/editprofile",parameters);
+            return jsonObject.getBoolean("status");
+
+        }catch (IOException ex) {
+            message = ex.getMessage();
+            Logger.getLogger(User.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CertificateException e) {
+            e.printStackTrace();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        } catch (UnrecoverableKeyException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (KeyStoreException e) {
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
+            e.printStackTrace();
+        }
+        return false;
+        /*
         // parameters.put("user_id", + ALL);
         Map<String, String> parameters = new HashMap<>();
         parameters.put("user_id", String.valueOf(v_User.id));
@@ -267,9 +318,8 @@ public class User {
         parameters.put("email", v_User.getEmail());
 
         try {
-            //Obten la respuesta en Json // pendiente nombre RUBEN
-            JSONObject jsonObject = getResponse("user/editprofile");
-
+            //Obten la respuesta en Json
+            JSONObject jsonObject = getResponse("user/editprofile", parameters);
             message = jsonObject.getString("message"); //get message
 
             return jsonObject.getBoolean("status");
@@ -288,6 +338,8 @@ public class User {
             throw new RuntimeException(e);
         }
         return false;
+
+         */
     }
 
     //Coches

@@ -39,6 +39,8 @@ public class Tu_Perfil extends AppCompatActivity {
     private TextView mtxtV_usuario;
     private TextView mtxtV_email;
     private TextView mtxtV_role;
+    private TextView mtxtV_location;
+    private TextView mtxtV_bio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +55,8 @@ public class Tu_Perfil extends AppCompatActivity {
         mtxtV_usuario = (TextView) findViewById(R.id.txtV_Usuario);
         mtxtV_email = (TextView) findViewById(R.id.txtV_Email);
         mtxtV_role = (TextView) findViewById(R.id.txtV_Role);
+        mtxtV_location = (TextView) findViewById(R.id.txtV_Location);
+        mtxtV_bio = (TextView) findViewById(R.id.txtV_Bio);
 
         //ImageView logo - CLICK - volver al main
         ImageView mImageVCab = findViewById(R.id.ImageVCab);
@@ -82,7 +86,7 @@ public class Tu_Perfil extends AppCompatActivity {
         mbtn_Modificar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Tu_Perfil_Edit.user = usr;
+                Tu_Perfil_Edit.usr = usr;
                 Intent intent = new Intent(Tu_Perfil.this, Tu_Perfil_Edit.class);
                 startActivity(intent);
             }
@@ -111,10 +115,11 @@ public class Tu_Perfil extends AppCompatActivity {
 
                 Thread thread = new Thread(() -> {
                     try {
-                        if(usr.delUser(usr)){
+                        if(usr.delUser()){
                             Tu_Perfil.usr = usr;
                             System.out.println(" TUS PERFIL A BORRAR ------: " + usr.getId());
                             System.out.println("PERFIL ELIMINADO");
+                            logoutSes();
                             Intent intent = new Intent(Tu_Perfil.this, MainActivity.class);
                             startActivity(intent);
 
@@ -153,8 +158,8 @@ public class Tu_Perfil extends AppCompatActivity {
         mtxtV_telefono.setText(usr.getPhone());
         mtxtV_usuario.setText(usr.getUsername());
         mtxtV_email.setText(usr.getEmail());
-        //locLabel.setText(usr.getLocation());
-        //bioLabel.setText(usr.getBio());
+        mtxtV_location.setText(usr.getLocation());
+        mtxtV_bio.setText(usr.getBio());
         mtxtV_role.setText(usr.isAdmin()?"Admin":"User");
 
     }
